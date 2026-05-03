@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "AI PPT Prompt Studio Sender",
+  "version": "1.0.0",
+  "description": "Send prompts from AI PPT Prompt Studio to ChatGPT or Gemini.",
+  "permissions": ["activeTab", "tabs", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://gemini.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+      "js": ["chatgpt-content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "externally_connectable": {
+    "matches": [
+      "file:///*",
+      "http://localhost/*",
+      "http://127.0.0.1/*",
+      "https://xixite.github.io/ai-ppt-prompt-studio/*"
+    ]
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}

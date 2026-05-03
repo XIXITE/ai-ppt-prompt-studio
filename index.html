@@ -1,0 +1,2073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI PPT Prompt Studio</title>
+<style>
+:root {
+  --navy: #003087;
+  --navy-dark: #00256e;
+  --navy-light: #e8eef7;
+  --orange: #d94f2b;
+  --orange-light: #fdf0ec;
+  --white: #ffffff;
+  --gray-50: #f7f7f6;
+  --gray-100: #eeede9;
+  --gray-300: #c8c7c1;
+  --gray-500: #888780;
+  --gray-700: #444441;
+  --gray-900: #1a1a18;
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 13px;
+  --font: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  --font-mono: "Consolas", "Microsoft YaHei", monospace;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--gray-50);
+  color: var(--gray-900);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Header */
+header {
+  background: var(--navy);
+  padding: 0 2rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header .logo {
+  width: 28px; height: 28px;
+  background: var(--orange);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+header .logo svg { width: 16px; height: 16px; fill: white; }
+
+header h1 {
+  font-size: 15px;
+  font-weight: 500;
+  color: white;
+  letter-spacing: 0.01em;
+}
+
+header .badge {
+  margin-left: auto;
+  font-size: 11px;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85);
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.02em;
+}
+
+/* Layout */
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Cards */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px; height: 14px;
+  background: var(--orange);
+  border-radius: 2px;
+}
+
+/* Forms */
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--gray-700);
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+textarea, select, input[type="text"] {
+  width: 100%;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--gray-900);
+  background: var(--gray-50);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  line-height: 1.6;
+  transition: border-color 0.15s, background 0.15s;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+textarea { resize: vertical; }
+
+textarea:focus, select:focus, input[type="text"]:focus {
+  border-color: var(--navy);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(0,48,135,0.08);
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888780' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.field { margin-bottom: 1rem; }
+.field:last-child { margin-bottom: 0; }
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Buttons */
+.btn-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1.25rem;
+}
+
+button {
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 9px 20px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid var(--gray-300);
+  background: var(--white);
+  color: var(--gray-700);
+  transition: all 0.15s;
+  outline: none;
+}
+
+button:hover { background: var(--gray-50); border-color: var(--gray-500); }
+button:active { transform: scale(0.98); }
+
+button.primary {
+  background: var(--navy);
+  color: white;
+  border-color: var(--navy);
+  padding: 9px 28px;
+}
+button.primary:hover { background: var(--navy-dark); border-color: var(--navy-dark); }
+select:disabled {
+  color: var(--gray-700);
+  cursor: default;
+  opacity: 1;
+}
+
+button.copy-btn {
+  background: var(--orange-light);
+  color: var(--orange);
+  border-color: #f0c4b4;
+}
+button.copy-btn:hover { background: #fae4dc; }
+
+.copy-msg {
+  font-size: 12px;
+  color: #2a9d5c;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.custom-style-panel {
+  margin-top: 0.25rem;
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-sm);
+  background: var(--gray-50);
+  overflow: hidden;
+}
+
+.custom-style-panel summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--navy);
+  font-weight: 500;
+}
+
+.custom-style-panel summary::-webkit-details-marker { display: none; }
+
+.custom-style-panel summary::after {
+  content: '+';
+  float: right;
+  color: var(--gray-500);
+}
+
+.custom-style-panel details[open] summary::after { content: '-'; }
+
+.custom-style-body {
+  padding: 0 12px 12px;
+}
+
+.compact-buttons {
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.custom-style-msg {
+  font-size: 12px;
+  color: #2a9d5c;
+  min-height: 18px;
+  margin-top: 6px;
+}
+
+/* ── First-run language dialog ── */
+.language-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(26, 26, 24, 0.48);
+}
+
+.language-modal[hidden] {
+  display: none;
+}
+
+.language-dialog {
+  width: min(460px, 100%);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.24);
+  padding: 24px;
+}
+
+.language-dialog h2 {
+  font-size: 20px;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.language-dialog p {
+  color: var(--gray-700);
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--gray-700);
+  font-size: 13px;
+}
+
+.checkbox-row input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--navy);
+}
+
+/* Mode tabs */
+[hidden] { display: none !important; }
+
+.mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.mode-tab {
+  border-color: transparent;
+  background: var(--gray-50);
+  color: var(--gray-700);
+  padding: 10px 14px;
+}
+
+.mode-tab:hover {
+  border-color: var(--gray-300);
+}
+
+.mode-tab.is-active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: white;
+}
+
+/* Output */
+.output-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.output-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.output-header {
+  background: var(--navy);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.output-header span {
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0.04em;
+}
+
+.output-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.output-title strong {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.output-title small {
+  color: rgba(255,255,255,0.72);
+  font-size: 11px;
+}
+
+.output-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.output-header button {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.25);
+  color: white;
+}
+.output-header button:hover { background: rgba(255,255,255,0.25); }
+.output-header .gemini-btn {
+  background: #4285f4;
+  border-color: #3b78e7;
+  color: white;
+}
+.output-header .gemini-btn:hover { background: #3b78e7; }
+.output-header .chatgpt-btn {
+  background: #10a37f;
+  border-color: #0e8f70;
+  color: white;
+}
+.output-header .chatgpt-btn:hover { background: #0e8f70; }
+.output-header .provider-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.provider-msg {
+  font-size: 12px;
+  color: #d94f2b;
+  opacity: 0;
+  transition: opacity 0.3s;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.output-body {
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--gray-900);
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 120px;
+  outline: none;
+  cursor: text;
+}
+
+.output-body.compact {
+  min-height: 96px;
+}
+
+.output-body:focus {
+  box-shadow: inset 0 0 0 2px var(--primary);
+  border-radius: 0 0 12px 12px;
+}
+
+.output-placeholder {
+  color: var(--gray-500);
+  font-style: normal;
+}
+
+/* Hints */
+.tip {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-top: 5px;
+  padding-left: 2px;
+}
+
+/* Version */
+footer {
+  text-align: center;
+  font-size: 12px;
+  color: var(--gray-300);
+  padding: 2rem 0 1rem;
+}
+
+@media (max-width: 600px) {
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .mode-tabs { grid-template-columns: 1fr; }
+  main { padding: 1rem 1rem 3rem; }
+  .output-header { align-items: flex-start; flex-direction: column; }
+  .output-actions { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 16 16"><path d="M2 12 L8 4 L14 12 Z"/></svg>
+  </div>
+  <h1>AI PPT Prompt Studio</h1>
+  <span class="badge">Open source · v1.0</span>
+</header>
+
+<div class="language-modal" id="languageModal" hidden>
+  <div class="language-dialog" role="dialog" aria-modal="true" aria-labelledby="languageDialogTitle">
+    <h2 id="languageDialogTitle" data-i18n="welcomeTitle">Choose your language</h2>
+    <p data-i18n="welcomeBody">The app interface and generated prompt settings will use this language.</p>
+    <div class="field">
+      <label for="welcomeLanguage" data-i18n="appLanguageLabel">App language</label>
+      <select id="welcomeLanguage"></select>
+    </div>
+    <label class="checkbox-row">
+      <input type="checkbox" id="rememberLanguage" checked>
+      <span data-i18n="rememberLanguage">Use this as my default on this device</span>
+    </label>
+    <div class="btn-row">
+      <button class="primary" onclick="confirmWelcomeLanguage()" data-i18n="continueButton">Continue</button>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <div class="mode-tabs" aria-label="Tool mode">
+    <button class="mode-tab is-active" data-mode-tab="illustration" aria-pressed="true" onclick="setMode('illustration')" data-i18n="modeIllustration">AI Visual Prompt</button>
+    <button class="mode-tab" data-mode-tab="pptx" aria-pressed="false" onclick="setMode('pptx')" data-i18n="modePptx">Image to PPTX Prompt</button>
+  </div>
+
+  <div class="card" id="languageSettingsCard">
+    <div class="card-title" data-i18n="languageTitle">Language</div>
+    <div class="grid2 field">
+      <div>
+        <label for="outputLanguage" data-i18n="appLanguageLabel">App language</label>
+        <select id="outputLanguage" onchange="saveOutputLanguage()">
+          <option value="en" selected>English</option>
+          <option value="zh-CN">中文</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+      <div>
+        <label data-i18n="languageNoteLabel">Note</label>
+        <p class="tip" data-i18n="languageTip">The app interface and generated prompt settings use this language. You can change it at any time.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-style-panel">
+    <details>
+      <summary data-i18n="extensionSummary">Extension settings (one-click send)</summary>
+      <div class="custom-style-body">
+        <p class="tip" data-i18n="extensionTip">After loading the extension folder manually, copy the extension ID from chrome://extensions and save it here. Copy still works without the extension.</p>
+        <div class="field">
+          <label data-i18n="extensionLabel">Chrome / Edge extension ID</label>
+          <input id="extensionIdInput" type="text" placeholder="Example: abcdefghijklmnopqrstuvwxyzabcdef" data-i18n-placeholder="extensionPlaceholder">
+        </div>
+        <div class="btn-row compact-buttons">
+          <button onclick="saveExtensionId()" data-i18n="saveExtensionId">Save extension ID</button>
+          <button onclick="clearExtensionId()" data-i18n="clearExtensionId">Clear extension ID</button>
+        </div>
+        <p id="extensionMsg" class="custom-style-msg"></p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Content input -->
+  <div class="card" id="illustrationContentCard">
+    <div class="card-title" data-i18n="slideContentTitle">Slide content</div>
+
+    <div class="field">
+      <label data-i18n="contentLabel">Core slide points</label>
+      <textarea id="content" rows="5" placeholder="Paste slide notes, for example:
+Target users: executives, product leads, sales teams
+Core problem: scattered information, inconsistent processes, slow handoffs
+Solution: unified workspace, automated reminders, dashboards, reusable templates
+Expected value: faster response, less repetitive communication, better project visibility" data-i18n-placeholder="contentPlaceholder"></textarea>
+    </div>
+
+    <div class="field">
+      <label><span data-i18n="noteLabel">Notes / diagram direction</span> <span style="font-weight:400;color:var(--gray-500)" data-i18n="optionalLabel">(optional)</span></label>
+      <textarea id="note" rows="2" placeholder="Example: show “problem discovery → solution design → execution tracking → review” as a flow diagram" data-i18n-placeholder="notePlaceholder"></textarea>
+    </div>
+  </div>
+
+  <!-- Image to PPT settings -->
+  <div class="card" id="pptxSettingsCard" hidden>
+    <div class="card-title" data-i18n="pptxTitle">Image to PPTX prompt</div>
+
+    <div class="grid3 field">
+      <div>
+        <label data-i18n="ratioLabel">Target ratio</label>
+        <select id="pptxRatio">
+          <option value="16:9" selected>16:9 widescreen</option>
+        </select>
+      </div>
+      <div>
+        <label data-i18n="regionLabel">Image region in the full slide</label>
+        <select id="pptxRegion">
+          <option value="full" selected>Full slide</option>
+          <option value="right-half">Right half</option>
+          <option value="left-half">Left half</option>
+          <option value="top-half">Top half</option>
+          <option value="bottom-half">Bottom half</option>
+          <option value="center-block">Center block</option>
+        </select>
+      </div>
+      <div>
+        <label data-i18n="strategyLabel">Rebuild strategy</label>
+        <select id="pptxStrategy" disabled>
+          <option value="fidelity-layered" selected>Fidelity-first layered rebuild</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label><span data-i18n="extraLabel">Extra requirements</span> <span style="font-weight:400;color:var(--gray-500)" data-i18n="optionalLabel">(optional)</span></label>
+      <textarea id="pptxExtra" rows="3" placeholder="Example: keep the header and footer; make tables editable; do not change colors; preserve icon texture as much as possible" data-i18n-placeholder="pptxExtraPlaceholder"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="primary" onclick="generate()" data-i18n="generatePptx">Generate PPTX prompt</button>
+      <p class="tip" data-i18n="pptxTip">Upload the image to ChatGPT or Gemini first, then paste the generated prompt.</p>
+    </div>
+  </div>
+
+  <!-- Visual settings -->
+  <div class="card" id="illustrationSettingsCard">
+    <div class="card-title" data-i18n="diagramSettingsTitle">Diagram settings</div>
+
+    <div class="grid2 field">
+      <div>
+        <label data-i18n="chartTypeLabel">Diagram type</label>
+        <select id="chartType">
+          <option value="auto" selected>Auto choose from content</option>
+          <option value="matrix">Quadrant / matrix</option>
+          <option value="flow">Flow diagram</option>
+          <option value="arch">Architecture / hierarchy</option>
+          <option value="relation">Relationship / ecosystem</option>
+          <option value="comparison">Comparison / parallel</option>
+          <option value="timeline">Timeline</option>
+          <option value="scene">Scene illustration</option>
+        </select>
+      </div>
+      <div>
+        <label data-i18n="placementLabel">Image placement on slide</label>
+        <select id="placement">
+          <option value="right-half">Right half (text on left)</option>
+          <option value="left-half">Left half (text on right)</option>
+          <option value="right-third">Right third (small visual)</option>
+          <option value="bottom-half">Bottom half (title above)</option>
+          <option value="full">Full slide</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid3 field">
+      <div>
+        <label data-i18n="complexityLabel">Complexity</label>
+        <select id="complexity">
+          <option value="simple">Simple (2-3 elements)</option>
+          <option value="medium" selected>Balanced (4-6 elements)</option>
+          <option value="rich">Rich (7+ elements)</option>
+        </select>
+      </div>
+      <div>
+        <label data-i18n="textLevelLabel">Text inside visual</label>
+        <select id="textLevel">
+          <option value="minimal">Minimal (icons only)</option>
+          <option value="some" selected>Light (short keywords)</option>
+          <option value="moderate">Moderate (brief labels)</option>
+        </select>
+      </div>
+      <div>
+        <label data-i18n="labelLanguageLabel">Label language</label>
+        <select id="lang" onchange="toggleCustomBilingualLanguage()">
+          <option value="auto" selected>Follow app language</option>
+          <option value="zh">Chinese</option>
+          <option value="en">English</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="es">Spanish</option>
+          <option value="it">Italian</option>
+          <option value="pt">Portuguese</option>
+          <option value="ja">Japanese</option>
+          <option value="ko">Korean</option>
+          <option value="custom-bilingual">Custom language + English</option>
+        </select>
+        <input id="customBilingualLang" type="text" placeholder="Example: French" data-i18n-placeholder="customBilingualPlaceholder" hidden>
+      </div>
+    </div>
+
+    <div class="grid3 field">
+      <div>
+        <label data-i18n="styleLabel">Style</label>
+        <select id="artStyle" onchange="applySelectedStyle()">
+          <option value="report-flat" selected>Report flat diagram (default)</option>
+          <option value="business-blue">Business blue-white diagram</option>
+          <option value="gray-minimal">Gray-white minimal diagram</option>
+          <option value="tech-wireframe">Tech wireframe diagram</option>
+          <option value="photo-scene">Realistic scene photography</option>
+          <option value="photo-overlay">Realistic information overlay</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="custom-style-panel">
+      <details>
+        <summary data-i18n="customStyleSummary">Custom style (generate importable JSON from a PPT)</summary>
+        <div class="custom-style-body">
+          <p class="tip" data-i18n="customStyleTip">Copy the analysis prompt, upload a PPT to ChatGPT or Gemini, ask it to output JSON, then paste the JSON here.</p>
+          <textarea id="customStyleJson" rows="5" placeholder='Paste style JSON, for example:
+{
+  "name": "Blue SaaS report",
+  "colors": {
+    "primary": "#0b3a75",
+    "primaryDark": "#082c59",
+    "primaryLight": "#e8f0fb",
+    "accent": "#2f80ed",
+    "accentLight": "#eaf3ff"
+  },
+  "styleBase": "Overall style: ..."
+}' data-i18n-placeholder="customStylePlaceholder"></textarea>
+          <div class="btn-row compact-buttons">
+            <button onclick="copyStyleAnalysisPrompt()" data-i18n="copyAnalysisPrompt">Copy analysis prompt</button>
+            <button onclick="importCustomStyle()" data-i18n="importStyle">Import style</button>
+            <button onclick="clearCustomStyles()" data-i18n="clearCustomStyle">Clear custom styles</button>
+          </div>
+          <p id="customStyleMsg" class="custom-style-msg"></p>
+        </div>
+      </details>
+    </div>
+
+    <div class="btn-row">
+      <button class="primary" onclick="generate()" data-i18n="generatePrompt">Generate prompts</button>
+      <p class="tip" data-i18n="generateTip">Enter content, choose settings, generate, then copy or send to ChatGPT / Gemini.</p>
+    </div>
+  </div>
+
+  <!-- Output -->
+  <div class="output-grid" id="outputs">
+    <div class="output-card" data-version-card="standard">
+      <div class="output-header">
+        <div class="output-title">
+          <strong data-i18n="standardTitle">Standard</strong>
+          <small data-i18n="standardDesc">General-purpose prompt for most content slides</small>
+        </div>
+        <div class="output-actions">
+          <button onclick="copyPrompt('standard')" data-i18n="copyButton">Copy</button>
+          <button class="provider-btn gemini-btn" onclick="sendToProvider('gemini', 'standard', this)" data-i18n="sendGemini">Send to Gemini</button>
+          <button class="provider-btn chatgpt-btn" onclick="sendToProvider('chatgpt', 'standard', this)" data-i18n="sendChatGPT">Send to ChatGPT</button>
+        </div>
+      </div>
+      <div class="output-body compact" data-output="standard" contenteditable="true" spellcheck="false">
+        <span class="output-placeholder" data-i18n="outputPlaceholder">Enter content, then click “Generate prompts”...</span>
+      </div>
+    </div>
+
+    <div class="output-card" data-version-card="structure">
+      <div class="output-header">
+        <div class="output-title">
+          <strong data-i18n="structureTitle">Structure-focused</strong>
+          <small data-i18n="structureDesc">Emphasizes flows, hierarchy, relationships, matrices, and comparisons</small>
+        </div>
+        <div class="output-actions">
+          <button onclick="copyPrompt('structure')" data-i18n="copyButton">Copy</button>
+          <button class="provider-btn gemini-btn" onclick="sendToProvider('gemini', 'structure', this)" data-i18n="sendGemini">Send to Gemini</button>
+          <button class="provider-btn chatgpt-btn" onclick="sendToProvider('chatgpt', 'structure', this)" data-i18n="sendChatGPT">Send to ChatGPT</button>
+        </div>
+      </div>
+      <div class="output-body compact" data-output="structure" contenteditable="true" spellcheck="false">
+        <span class="output-placeholder" data-i18n="outputPlaceholder">Enter content, then click “Generate prompts”...</span>
+      </div>
+    </div>
+
+    <div class="output-card" data-version-card="visual">
+      <div class="output-header">
+        <div class="output-title">
+          <strong data-i18n="visualTitle">Visual-enhanced</strong>
+          <small data-i18n="visualDesc">Keeps the content focus while adding stronger scene and visual impact</small>
+        </div>
+        <div class="output-actions">
+          <button onclick="copyPrompt('visual')" data-i18n="copyButton">Copy</button>
+          <button class="provider-btn gemini-btn" onclick="sendToProvider('gemini', 'visual', this)" data-i18n="sendGemini">Send to Gemini</button>
+          <button class="provider-btn chatgpt-btn" onclick="sendToProvider('chatgpt', 'visual', this)" data-i18n="sendChatGPT">Send to ChatGPT</button>
+        </div>
+      </div>
+      <div class="output-body compact" data-output="visual" contenteditable="true" spellcheck="false">
+        <span class="output-placeholder" data-i18n="outputPlaceholder">Enter content, then click “Generate prompts”...</span>
+      </div>
+    </div>
+
+    <div class="output-card" id="pptxOutputCard" hidden>
+      <div class="output-header">
+        <div class="output-title">
+          <strong data-i18n="pptxOutputTitle">PPTX rebuild prompt</strong>
+          <small data-i18n="pptxOutputDesc">Paste it into the AI chat after uploading the image</small>
+        </div>
+        <div class="output-actions">
+          <button onclick="copyPrompt('pptx')" data-i18n="copyButton">Copy</button>
+        </div>
+      </div>
+      <div class="output-body compact" data-output="pptx" contenteditable="true" spellcheck="false">
+        <span class="output-placeholder" data-i18n="pptxPlaceholder">Click “Generate PPTX prompt” to show the prompt...</span>
+      </div>
+    </div>
+  </div>
+
+  <p id="copyMsg" class="copy-msg" style="text-align:center;margin-top:8px;" data-i18n="copiedMsg">Copied to clipboard</p>
+  <p id="providerMsg" class="provider-msg"></p>
+
+</main>
+
+<footer>AI PPT Prompt Studio · v1.0 · Open source prompt workflow for PPT visuals</footer>
+
+<script>
+const THEMES = {
+  general: {
+    name: "General PPT visuals",
+    colors: {
+      primary: "#003087",
+      primaryDark: "#00256e",
+      primaryLight: "#e8eef7",
+      accent: "#d94f2b",
+      accentLight: "#fdf0ec",
+    },
+    styleBase: `Overall style: professional flat vector PPT diagram, deep navy blue (#003087) as the main color, white background, orange-red accent. Suitable for business analysis, policy reports, product proposals, project updates, and training decks. Avoid photorealistic rendering, material textures, and heavy gradients. Fill the canvas without white borders. Output a high-resolution image with crisp details, suitable for presentations and large screens. If Chinese text is required, use Microsoft YaHei.`,
+    typePrompts: {
+      matrix: (content, note) => {
+        const axis = note ? `Diagram direction: ${note}` : "Use the horizontal and vertical axes to represent two key dimensions inferred from the content.";
+        return `Create a PPT-ready visual illustration as a quadrant / matrix framework.\nContent reference only: ${content}\n${axis}\nPlace a simple icon in each quadrant. Use arrows at both ends of each axis to show progression. This is a PPT supporting visual, not a dense infographic; use icons and very short labels only.`;
+      },
+      flow: (content, note) => {
+        const extra = note ? `\nDiagram direction: ${note}` : "";
+        return `Create a PPT-ready horizontal flow diagram.\nContent reference only: ${content}${extra}\nUse rounded step nodes with small icons and arrows between them. Highlight key steps with the accent color. This is a PPT supporting visual, not a dense infographic; use icons and very short labels only.`;
+      },
+      arch: (content, note) => {
+        const extra = note ? `\nDiagram direction: ${note}` : "";
+        return `Create a PPT-ready system architecture / hierarchy diagram.\nContent reference only: ${content}${extra}\nUse 3 to 4 horizontal layers connected vertically. Put users or interface elements at the top and infrastructure or foundations at the bottom. Use icons and very short labels only.`;
+      },
+      relation: (content, note) => {
+        const extra = note ? `\nDiagram direction: ${note}` : "";
+        return `Create a PPT-ready hub-and-spoke relationship diagram.\nContent reference only: ${content}${extra}\nUse a central core node surrounded by related stakeholder or component nodes. Connect them with clear lines and emphasize the center with the accent color. Use icons and very short labels only.`;
+      },
+      comparison: (content, note) => {
+        const extra = note ? `\nDiagram direction: ${note}` : "";
+        return `Create a PPT-ready horizontal comparison diagram.\nContent reference only: ${content}${extra}\nEach column represents one model, option, or scenario. Use clear icons in column headers and compact comparison blocks below. Highlight the key column with the accent color. Use icons and very short labels only.`;
+      },
+      timeline: (content, note) => {
+        const extra = note ? `\nDiagram direction: ${note}` : "";
+        return `Create a PPT-ready horizontal timeline.\nContent reference only: ${content}${extra}\nUse milestone nodes alternating above and below the timeline. Add small icons to each node and highlight key milestones with the accent color. Use icons and very short labels only.`;
+      },
+      scene: (content, note) => {
+        const extra = note ? `\nDiagram direction: ${note}` : "";
+        return `Create a PPT-ready scene illustration based on the content.\nContent reference only: ${content}${extra}\nUse an office, city, product, service, or business context as the background. Show relevant devices, people, interfaces, workflows, or business objects in the foreground. Keep it clean and professional with minimal text.`;
+      },
+      auto: (content, note) => {
+        const extra = note ? `\nDiagram direction: ${note}` : "";
+        return `Create a PPT-ready visual and automatically choose the most suitable diagram structure based on the content.\nContent reference only: ${content}${extra}\nThis is a PPT supporting visual, not a dense infographic. Use icons and very short labels only.`;
+      },
+    },
+  },
+};
+
+const DEFAULT_THEME = "general";
+let currentTheme = DEFAULT_THEME;
+let currentUiLanguage = "en";
+
+const LANGUAGE_OPTIONS = [
+  { key: "en", label: "English" },
+  { key: "zh-CN", label: "中文" },
+  { key: "fr", label: "Français" },
+];
+
+const UI_TEXT = {
+  en: {
+    welcomeTitle: "Choose your language",
+    welcomeBody: "The app interface and generated prompt settings will use this language.",
+    rememberLanguage: "Use this as my default on this device",
+    continueButton: "Continue",
+    modeIllustration: "AI Visual Prompt",
+    modePptx: "Image to PPTX Prompt",
+    languageTitle: "Language",
+    appLanguageLabel: "App language",
+    languageNoteLabel: "Note",
+    languageTip: "The app interface and generated prompt settings use this language. You can change it at any time.",
+    extensionSummary: "Extension settings (one-click send)",
+    extensionTip: "After loading the extension folder manually, copy the extension ID from chrome://extensions and save it here. Copy still works without the extension.",
+    extensionLabel: "Chrome / Edge extension ID",
+    extensionPlaceholder: "Example: abcdefghijklmnopqrstuvwxyzabcdef",
+    saveExtensionId: "Save extension ID",
+    clearExtensionId: "Clear extension ID",
+    slideContentTitle: "Slide content",
+    contentLabel: "Core slide points",
+    contentPlaceholder: "Paste slide notes, for example:\nTarget users: executives, product leads, sales teams\nCore problem: scattered information, inconsistent processes, slow handoffs\nSolution: unified workspace, automated reminders, dashboards, reusable templates\nExpected value: faster response, less repetitive communication, better project visibility",
+    noteLabel: "Notes / diagram direction",
+    optionalLabel: "(optional)",
+    notePlaceholder: "Example: show “problem discovery -> solution design -> execution tracking -> review” as a flow diagram",
+    pptxTitle: "Image to PPTX prompt",
+    ratioLabel: "Target ratio",
+    regionLabel: "Image region in the full slide",
+    strategyLabel: "Rebuild strategy",
+    extraLabel: "Extra requirements",
+    pptxExtraPlaceholder: "Example: keep the header and footer; make tables editable; do not change colors; preserve icon texture as much as possible",
+    generatePptx: "Generate PPTX prompt",
+    pptxTip: "Upload the image to ChatGPT or Gemini first, then paste the generated prompt.",
+    diagramSettingsTitle: "Diagram settings",
+    chartTypeLabel: "Diagram type",
+    placementLabel: "Image placement on slide",
+    complexityLabel: "Complexity",
+    textLevelLabel: "Text inside visual",
+    labelLanguageLabel: "Label language",
+    styleLabel: "Style",
+    customStyleSummary: "Custom style (generate importable JSON from a PPT)",
+    customStyleTip: "Copy the analysis prompt, upload a PPT to ChatGPT or Gemini, ask it to output JSON, then paste the JSON here.",
+    customStylePlaceholder: "Paste style JSON, for example:\n{\n  \"name\": \"Blue SaaS report\",\n  \"colors\": {\n    \"primary\": \"#0b3a75\",\n    \"primaryDark\": \"#082c59\",\n    \"primaryLight\": \"#e8f0fb\",\n    \"accent\": \"#2f80ed\",\n    \"accentLight\": \"#eaf3ff\"\n  },\n  \"styleBase\": \"Overall style: ...\"\n}",
+    copyAnalysisPrompt: "Copy analysis prompt",
+    importStyle: "Import style",
+    clearCustomStyle: "Clear custom styles",
+    generatePrompt: "Generate prompts",
+    generateTip: "Enter content, choose settings, generate, then copy or send to ChatGPT / Gemini.",
+    standardTitle: "Standard",
+    standardDesc: "General-purpose prompt for most content slides",
+    structureTitle: "Structure-focused",
+    structureDesc: "Emphasizes flows, hierarchy, relationships, matrices, and comparisons",
+    visualTitle: "Visual-enhanced",
+    visualDesc: "Keeps the content focus while adding stronger scene and visual impact",
+    copyButton: "Copy",
+    sendGemini: "Send to Gemini",
+    sendChatGPT: "Send to ChatGPT",
+    outputPlaceholder: "Enter content, then click “Generate prompts”...",
+    pptxOutputTitle: "PPTX rebuild prompt",
+    pptxOutputDesc: "Paste it into the AI chat after uploading the image",
+    pptxPlaceholder: "Click “Generate PPTX prompt” to show the prompt...",
+    copiedMsg: "Copied to clipboard",
+    themeGeneral: "General PPT visuals",
+    defaultSuffix: "default",
+    customPrefix: "Custom",
+    styleReportFlat: "Report flat diagram",
+    styleBusinessBlue: "Business blue-white diagram",
+    styleGrayMinimal: "Gray-white minimal diagram",
+    styleTechWireframe: "Tech wireframe diagram",
+    stylePhotoScene: "Realistic scene photography",
+    stylePhotoOverlay: "Realistic information overlay",
+    chartAuto: "Auto choose from content",
+    chartMatrix: "Quadrant / matrix",
+    chartFlow: "Flow diagram",
+    chartArch: "Architecture / hierarchy",
+    chartRelation: "Relationship / ecosystem",
+    chartComparison: "Comparison / parallel",
+    chartTimeline: "Timeline",
+    chartScene: "Scene illustration",
+    placementRightHalf: "Right half (text on left)",
+    placementLeftHalf: "Left half (text on right)",
+    placementRightThird: "Right third (small visual)",
+    placementBottomHalf: "Bottom half (title above)",
+    placementFull: "Full slide",
+    complexitySimple: "Simple (2-3 elements)",
+    complexityMedium: "Balanced (4-6 elements)",
+    complexityRich: "Rich (7+ elements)",
+    textMinimal: "Minimal (icons only)",
+    textSome: "Light (short keywords)",
+    textModerate: "Moderate (brief labels)",
+    labelAuto: "Follow app language",
+    labelChinese: "Chinese",
+    labelEnglish: "English",
+    labelFrench: "French",
+    labelGerman: "German",
+    labelSpanish: "Spanish",
+    labelItalian: "Italian",
+    labelPortuguese: "Portuguese",
+    labelJapanese: "Japanese",
+    labelKorean: "Korean",
+    labelCustomBilingual: "Custom language + English",
+    customBilingualPlaceholder: "Example: French",
+    regionFull: "Full slide",
+    regionRightHalf: "Right half",
+    regionLeftHalf: "Left half",
+    regionTopHalf: "Top half",
+    regionBottomHalf: "Bottom half",
+    regionCenterBlock: "Center block",
+    ratioWidescreen: "16:9 widescreen",
+    strategyFidelity: "Fidelity-first layered rebuild",
+    msgNeedContent: "Please enter slide content or notes first.",
+    msgNeedJson: "Please paste style JSON first.",
+    msgJsonNeedFields: "Import failed: JSON must include name and styleBase.",
+    msgJsonInvalid: "Import failed: invalid JSON format.",
+    msgStyleImported: "Imported custom style:",
+    msgNoCustomStyles: "No custom styles yet.",
+    msgConfirmClearStyles: "Clear all custom styles?",
+    msgStylesCleared: "Custom styles cleared.",
+    msgStylePromptCopied: "PPT style JSON prompt copied.",
+    msgCopyFailed: "Copy failed. Please copy manually.",
+    msgInvalidExtensionId: "The extension ID should be 32 lowercase letters copied from chrome://extensions.",
+    msgExtensionSaved: "Extension ID saved.",
+    msgExtensionCleared: "Extension ID cleared.",
+    msgNeedExtensionId: "Prompt copied. To send automatically, save your extension ID in Extension settings first.",
+    msgSending: "Sending...",
+    msgGeminiSent: "Sent. Gemini will open and submit the prompt automatically.",
+    msgChatGptSent: "Sent. ChatGPT will open and submit the prompt automatically.",
+    msgSendFailedInstall: "Send failed: check whether the extension is installed and enabled.",
+    msgSendFailedRefresh: "Send failed: refresh the extension and try again.",
+    msgPptxBadge: "Image to PPTX · copy prompt",
+  },
+  fr: {
+    welcomeTitle: "Choisissez votre langue",
+    welcomeBody: "L’interface et les réglages de prompt utiliseront cette langue.",
+    rememberLanguage: "Utiliser cette langue par défaut sur cet appareil",
+    continueButton: "Continuer",
+    modeIllustration: "Prompt visuel IA",
+    modePptx: "Image vers PPTX",
+    languageTitle: "Langue",
+    appLanguageLabel: "Langue de l’application",
+    languageNoteLabel: "Note",
+    languageTip: "L’interface et les réglages de prompt utilisent cette langue. Vous pouvez la modifier à tout moment.",
+    extensionSummary: "Réglages de l’extension (envoi en un clic)",
+    extensionTip: "Après avoir chargé le dossier extension, copiez l’ID depuis chrome://extensions et enregistrez-le ici. La copie fonctionne aussi sans extension.",
+    extensionLabel: "ID d’extension Chrome / Edge",
+    extensionPlaceholder: "Exemple : abcdefghijklmnopqrstuvwxyzabcdef",
+    saveExtensionId: "Enregistrer l’ID",
+    clearExtensionId: "Effacer l’ID",
+    slideContentTitle: "Contenu de la diapositive",
+    contentLabel: "Points clés",
+    contentPlaceholder: "Collez les notes de diapositive, par exemple :\nUtilisateurs cibles : dirigeants, responsables produit, équipes commerciales\nProblème : informations dispersées, processus incohérents, passages de relais lents\nSolution : espace de travail unifié, rappels automatiques, tableaux de bord, modèles réutilisables\nValeur attendue : réponse plus rapide, moins de communications répétitives, meilleure visibilité projet",
+    noteLabel: "Notes / direction du schéma",
+    optionalLabel: "(facultatif)",
+    notePlaceholder: "Exemple : montrer « découverte du problème -> conception de solution -> suivi d’exécution -> bilan » sous forme de flux",
+    pptxTitle: "Prompt image vers PPTX",
+    ratioLabel: "Format cible",
+    regionLabel: "Zone de l’image dans la diapositive",
+    strategyLabel: "Stratégie de reconstruction",
+    extraLabel: "Exigences supplémentaires",
+    pptxExtraPlaceholder: "Exemple : conserver l’en-tête et le pied de page ; rendre les tableaux modifiables ; ne pas changer les couleurs",
+    generatePptx: "Générer le prompt PPTX",
+    pptxTip: "Téléversez d’abord l’image dans ChatGPT ou Gemini, puis collez le prompt généré.",
+    diagramSettingsTitle: "Réglages du schéma",
+    chartTypeLabel: "Type de schéma",
+    placementLabel: "Placement sur la diapositive",
+    complexityLabel: "Complexité",
+    textLevelLabel: "Texte dans le visuel",
+    labelLanguageLabel: "Langue des libellés",
+    styleLabel: "Style",
+    customStyleSummary: "Style personnalisé (JSON importable depuis un PPT)",
+    customStyleTip: "Copiez le prompt d’analyse, téléversez un PPT dans ChatGPT ou Gemini, demandez un JSON, puis collez-le ici.",
+    copyAnalysisPrompt: "Copier le prompt d’analyse",
+    importStyle: "Importer le style",
+    clearCustomStyle: "Effacer les styles",
+    generatePrompt: "Générer les prompts",
+    generateTip: "Saisissez le contenu, choisissez les réglages, générez, puis copiez ou envoyez à ChatGPT / Gemini.",
+    standardTitle: "Standard",
+    standardDesc: "Prompt polyvalent pour la plupart des diapositives",
+    structureTitle: "Structuré",
+    structureDesc: "Met l’accent sur flux, hiérarchies, relations, matrices et comparaisons",
+    visualTitle: "Visuel renforcé",
+    visualDesc: "Garde le contenu central tout en renforçant la scène et l’impact visuel",
+    copyButton: "Copier",
+    sendGemini: "Envoyer à Gemini",
+    sendChatGPT: "Envoyer à ChatGPT",
+    outputPlaceholder: "Saisissez le contenu, puis cliquez sur « Générer les prompts »...",
+    pptxOutputTitle: "Prompt de reconstruction PPTX",
+    pptxOutputDesc: "Collez-le dans la conversation IA après avoir téléversé l’image",
+    pptxPlaceholder: "Cliquez sur « Générer le prompt PPTX » pour l’afficher...",
+    copiedMsg: "Copié dans le presse-papiers",
+    themeGeneral: "Visuels PPT génériques",
+    defaultSuffix: "par défaut",
+    customPrefix: "Personnalisé",
+    styleReportFlat: "Schéma plat de rapport",
+    styleBusinessBlue: "Schéma bleu-blanc professionnel",
+    styleGrayMinimal: "Schéma minimal gris-blanc",
+    styleTechWireframe: "Schéma filaire technologique",
+    stylePhotoScene: "Scène réaliste photographique",
+    stylePhotoOverlay: "Photo réaliste avec informations",
+    chartAuto: "Choisir automatiquement",
+    chartMatrix: "Quadrant / matrice",
+    chartFlow: "Diagramme de flux",
+    chartArch: "Architecture / hiérarchie",
+    chartRelation: "Relation / écosystème",
+    chartComparison: "Comparaison / parallèle",
+    chartTimeline: "Frise chronologique",
+    chartScene: "Illustration de scène",
+    placementRightHalf: "Moitié droite (texte à gauche)",
+    placementLeftHalf: "Moitié gauche (texte à droite)",
+    placementRightThird: "Tiers droit (petit visuel)",
+    placementBottomHalf: "Moitié basse (titre au-dessus)",
+    placementFull: "Diapositive entière",
+    complexitySimple: "Simple (2-3 éléments)",
+    complexityMedium: "Équilibré (4-6 éléments)",
+    complexityRich: "Riche (7+ éléments)",
+    textMinimal: "Minimal (icônes seules)",
+    textSome: "Léger (mots-clés courts)",
+    textModerate: "Modéré (libellés courts)",
+    labelAuto: "Suivre la langue de l’application",
+    labelChinese: "Chinois",
+    labelEnglish: "Anglais",
+    labelFrench: "Français",
+    labelGerman: "Allemand",
+    labelSpanish: "Espagnol",
+    labelItalian: "Italien",
+    labelPortuguese: "Portugais",
+    labelJapanese: "Japonais",
+    labelKorean: "Coréen",
+    labelCustomBilingual: "Langue personnalisée + anglais",
+    customBilingualPlaceholder: "Exemple : français",
+    regionFull: "Diapositive entière",
+    regionRightHalf: "Moitié droite",
+    regionLeftHalf: "Moitié gauche",
+    regionTopHalf: "Moitié haute",
+    regionBottomHalf: "Moitié basse",
+    regionCenterBlock: "Bloc central",
+    ratioWidescreen: "16:9 écran large",
+    strategyFidelity: "Reconstruction par calques fidèle",
+    msgNeedContent: "Veuillez saisir le contenu ou les notes.",
+    msgNeedJson: "Veuillez coller un JSON de style.",
+    msgJsonNeedFields: "Échec : le JSON doit contenir name et styleBase.",
+    msgJsonInvalid: "Échec : format JSON invalide.",
+    msgStyleImported: "Style importé :",
+    msgNoCustomStyles: "Aucun style personnalisé.",
+    msgConfirmClearStyles: "Effacer tous les styles personnalisés ?",
+    msgStylesCleared: "Styles personnalisés effacés.",
+    msgStylePromptCopied: "Prompt JSON de style copié.",
+    msgCopyFailed: "Copie impossible. Copiez manuellement.",
+    msgInvalidExtensionId: "L’ID d’extension doit contenir 32 lettres minuscules copiées depuis chrome://extensions.",
+    msgExtensionSaved: "ID d’extension enregistré.",
+    msgExtensionCleared: "ID d’extension effacé.",
+    msgNeedExtensionId: "Prompt copié. Pour l’envoi automatique, enregistrez d’abord l’ID de l’extension.",
+    msgSending: "Envoi...",
+    msgGeminiSent: "Envoyé. Gemini s’ouvrira et enverra le prompt automatiquement.",
+    msgChatGptSent: "Envoyé. ChatGPT s’ouvrira et enverra le prompt automatiquement.",
+    msgSendFailedInstall: "Échec de l’envoi : vérifiez que l’extension est installée et activée.",
+    msgSendFailedRefresh: "Échec de l’envoi : actualisez l’extension et réessayez.",
+    msgPptxBadge: "Image vers PPTX · copier le prompt",
+  },
+  "zh-CN": {
+    welcomeTitle: "选择语言",
+    welcomeBody: "软件界面和生成提示词的默认设置将使用该语言。",
+    rememberLanguage: "在本设备上设为默认语言",
+    continueButton: "继续",
+    modeIllustration: "AI 配图提示词",
+    modePptx: "图片转 PPTX 提示词",
+    languageTitle: "语言",
+    appLanguageLabel: "界面语言",
+    languageNoteLabel: "说明",
+    languageTip: "软件界面和生成提示词设置会使用该语言，可随时修改。",
+    extensionSummary: "扩展设置（一键发送）",
+    extensionTip: "手动加载 extension 文件夹后，从 chrome://extensions 复制扩展 ID 并保存到这里。未配置扩展时仍可复制提示词。",
+    extensionLabel: "Chrome / Edge 扩展 ID",
+    extensionPlaceholder: "示例：abcdefghijklmnopqrstuvwxyzabcdef",
+    saveExtensionId: "保存扩展 ID",
+    clearExtensionId: "清除扩展 ID",
+    slideContentTitle: "幻灯片内容",
+    contentLabel: "核心内容要点",
+    contentPlaceholder: "粘贴幻灯片要点，例如：\n目标用户：管理层、产品负责人、销售团队\n核心问题：信息分散、流程不一致、交接慢\n解决方案：统一工作台、自动提醒、数据看板、复用模板\n预期价值：响应更快、减少重复沟通、提升项目可视化",
+    noteLabel: "备注 / 图示方向",
+    optionalLabel: "（可选）",
+    notePlaceholder: "示例：用流程图表现“问题发现 -> 方案设计 -> 执行跟踪 -> 复盘优化”",
+    pptxTitle: "图片转 PPTX 提示词",
+    ratioLabel: "目标比例",
+    regionLabel: "图片在整页中的区域",
+    strategyLabel: "重建策略",
+    extraLabel: "补充要求",
+    pptxExtraPlaceholder: "示例：保留页眉页脚；重点保证表格可编辑；不要改动配色；尽量保留图标质感",
+    generatePptx: "生成 PPTX 提示词",
+    pptxTip: "先把图片上传到 ChatGPT 或 Gemini，再粘贴这里生成的提示词。",
+    diagramSettingsTitle: "图示设置",
+    chartTypeLabel: "图示类型",
+    placementLabel: "图片在幻灯片中的位置",
+    complexityLabel: "复杂度",
+    textLevelLabel: "图中文字",
+    labelLanguageLabel: "标签语言",
+    styleLabel: "风格",
+    customStyleSummary: "定制风格（从 PPT 生成可导入 JSON）",
+    customStyleTip: "复制分析提示词，把 PPT 上传给 ChatGPT 或 Gemini，让它输出 JSON 后粘贴到这里。",
+    customStylePlaceholder: "粘贴风格 JSON，例如：\n{\n  \"name\": \"蓝色商务报告\",\n  \"colors\": {\n    \"primary\": \"#0b3a75\",\n    \"primaryDark\": \"#082c59\",\n    \"primaryLight\": \"#e8f0fb\",\n    \"accent\": \"#2f80ed\",\n    \"accentLight\": \"#eaf3ff\"\n  },\n  \"styleBase\": \"整体风格：...\"\n}",
+    copyAnalysisPrompt: "复制分析提示词",
+    importStyle: "导入风格",
+    clearCustomStyle: "清除定制风格",
+    generatePrompt: "生成提示词",
+    generateTip: "填写内容、选择参数后生成，再复制或发送到 ChatGPT / Gemini。",
+    standardTitle: "标准版",
+    standardDesc: "适合大多数内容页的通用提示词",
+    structureTitle: "结构强化版",
+    structureDesc: "强调流程、层级、关系、矩阵和对比",
+    visualTitle: "视觉增强版",
+    visualDesc: "保持内容主题，同时增强场景感和视觉表现力",
+    copyButton: "复制",
+    sendGemini: "发送到 Gemini",
+    sendChatGPT: "发送到 ChatGPT",
+    outputPlaceholder: "填写内容后，点击“生成提示词”...",
+    pptxOutputTitle: "PPTX 重建提示词",
+    pptxOutputDesc: "上传图片后，把这段提示词粘贴到 AI 对话中",
+    pptxPlaceholder: "点击“生成 PPTX 提示词”后显示...",
+    copiedMsg: "已复制到剪贴板",
+    themeGeneral: "通用 PPT 图示",
+    defaultSuffix: "默认",
+    customPrefix: "定制",
+    styleReportFlat: "报告扁平图示",
+    styleBusinessBlue: "商务蓝白图示",
+    styleGrayMinimal: "灰白极简图示",
+    styleTechWireframe: "科技线框图示",
+    stylePhotoScene: "写实场景摄影",
+    stylePhotoOverlay: "写实信息叠加",
+    chartAuto: "根据内容自动判断",
+    chartMatrix: "四象限 / 矩阵",
+    chartFlow: "流程图",
+    chartArch: "架构 / 层级",
+    chartRelation: "关系 / 生态",
+    chartComparison: "对比 / 并列",
+    chartTimeline: "时间线",
+    chartScene: "场景插图",
+    placementRightHalf: "右半页（左侧放文字）",
+    placementLeftHalf: "左半页（右侧放文字）",
+    placementRightThird: "右三分之一（小图）",
+    placementBottomHalf: "下半页（上方放标题）",
+    placementFull: "整页",
+    complexitySimple: "简单（2-3 个元素）",
+    complexityMedium: "适中（4-6 个元素）",
+    complexityRich: "丰富（7 个以上元素）",
+    textMinimal: "极少（仅图标）",
+    textSome: "少量（短关键词）",
+    textModerate: "适中（简短标签）",
+    labelAuto: "跟随界面语言",
+    labelChinese: "中文",
+    labelEnglish: "英文",
+    labelFrench: "法语",
+    labelGerman: "德语",
+    labelSpanish: "西班牙语",
+    labelItalian: "意大利语",
+    labelPortuguese: "葡萄牙语",
+    labelJapanese: "日语",
+    labelKorean: "韩语",
+    labelCustomBilingual: "填写语言 + 英文",
+    customBilingualPlaceholder: "例如：法语",
+    regionFull: "整页",
+    regionRightHalf: "右半页",
+    regionLeftHalf: "左半页",
+    regionTopHalf: "上半页",
+    regionBottomHalf: "下半页",
+    regionCenterBlock: "中部区域",
+    ratioWidescreen: "16:9 宽屏",
+    strategyFidelity: "保真优先分层重建",
+    msgNeedContent: "请先填写幻灯片内容或备注。",
+    msgNeedJson: "请先粘贴风格 JSON。",
+    msgJsonNeedFields: "导入失败：JSON 必须包含 name 和 styleBase。",
+    msgJsonInvalid: "导入失败：JSON 格式不正确。",
+    msgStyleImported: "已导入定制风格：",
+    msgNoCustomStyles: "当前没有定制风格。",
+    msgConfirmClearStyles: "确定清除所有定制风格吗？",
+    msgStylesCleared: "已清除定制风格。",
+    msgStylePromptCopied: "已复制 PPT 风格 JSON 提示词。",
+    msgCopyFailed: "复制失败，请手动复制。",
+    msgInvalidExtensionId: "扩展 ID 应为 32 位小写字母，请从 chrome://extensions 复制。",
+    msgExtensionSaved: "扩展 ID 已保存。",
+    msgExtensionCleared: "扩展 ID 已清除。",
+    msgNeedExtensionId: "提示词已复制。要一键发送，请先在扩展设置中保存扩展 ID。",
+    msgSending: "发送中...",
+    msgGeminiSent: "已发送，Gemini 将自动打开并提交提示词。",
+    msgChatGptSent: "已发送，ChatGPT 将自动打开并提交提示词。",
+    msgSendFailedInstall: "发送失败：请检查扩展是否已安装并启用。",
+    msgSendFailedRefresh: "发送失败：请刷新扩展后重试。",
+    msgPptxBadge: "图片转 PPTX · 复制提示词",
+  },
+};
+
+function t(key) {
+  return (UI_TEXT[currentUiLanguage] && UI_TEXT[currentUiLanguage][key]) || UI_TEXT.en[key] || key;
+}
+
+function isSupportedUiLanguage(languageKey) {
+  return LANGUAGE_OPTIONS.some((lang) => lang.key === languageKey);
+}
+
+function populateLanguageSelect(select) {
+  if (!select) return;
+  const value = select.value || currentUiLanguage;
+  select.innerHTML = "";
+  LANGUAGE_OPTIONS.forEach((lang) => {
+    const option = document.createElement("option");
+    option.value = lang.key;
+    option.textContent = lang.label;
+    select.appendChild(option);
+  });
+  select.value = LANGUAGE_OPTIONS.some((lang) => lang.key === value) ? value : "en";
+}
+
+function setSelectOptions(selectId, options) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+  const value = select.value;
+  select.innerHTML = "";
+  options.forEach(([optionValue, label]) => {
+    const option = document.createElement("option");
+    option.value = optionValue;
+    option.textContent = label;
+    select.appendChild(option);
+  });
+  select.value = options.some(([optionValue]) => optionValue === value) ? value : options[0][0];
+}
+
+function applyUiLanguage(languageKey) {
+  currentUiLanguage = isSupportedUiLanguage(languageKey) ? languageKey : "en";
+  document.documentElement.lang = currentUiLanguage;
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    el.setAttribute("placeholder", t(el.dataset.i18nPlaceholder));
+  });
+
+  populateLanguageSelect(document.getElementById("outputLanguage"));
+  populateLanguageSelect(document.getElementById("welcomeLanguage"));
+  document.getElementById("outputLanguage").value = currentUiLanguage;
+  if (document.getElementById("welcomeLanguage")) {
+    document.getElementById("welcomeLanguage").value = currentUiLanguage;
+  }
+
+  setSelectOptions("chartType", [
+    ["auto", t("chartAuto")],
+    ["matrix", t("chartMatrix")],
+    ["flow", t("chartFlow")],
+    ["arch", t("chartArch")],
+    ["relation", t("chartRelation")],
+    ["comparison", t("chartComparison")],
+    ["timeline", t("chartTimeline")],
+    ["scene", t("chartScene")],
+  ]);
+  setSelectOptions("placement", [
+    ["right-half", t("placementRightHalf")],
+    ["left-half", t("placementLeftHalf")],
+    ["right-third", t("placementRightThird")],
+    ["bottom-half", t("placementBottomHalf")],
+    ["full", t("placementFull")],
+  ]);
+  setSelectOptions("complexity", [
+    ["simple", t("complexitySimple")],
+    ["medium", t("complexityMedium")],
+    ["rich", t("complexityRich")],
+  ]);
+  setSelectOptions("textLevel", [
+    ["minimal", t("textMinimal")],
+    ["some", t("textSome")],
+    ["moderate", t("textModerate")],
+  ]);
+  setSelectOptions("lang", [
+    ["auto", t("labelAuto")],
+    ["zh", t("labelChinese")],
+    ["en", t("labelEnglish")],
+    ["fr", t("labelFrench")],
+    ["de", t("labelGerman")],
+    ["es", t("labelSpanish")],
+    ["it", t("labelItalian")],
+    ["pt", t("labelPortuguese")],
+    ["ja", t("labelJapanese")],
+    ["ko", t("labelKorean")],
+    ["custom-bilingual", t("labelCustomBilingual")],
+  ]);
+  setSelectOptions("pptxRegion", [
+    ["full", t("regionFull")],
+    ["right-half", t("regionRightHalf")],
+    ["left-half", t("regionLeftHalf")],
+    ["top-half", t("regionTopHalf")],
+    ["bottom-half", t("regionBottomHalf")],
+    ["center-block", t("regionCenterBlock")],
+  ]);
+  setSelectOptions("pptxRatio", [["16:9", t("ratioWidescreen")]]);
+  setSelectOptions("pptxStrategy", [["fidelity-layered", t("strategyFidelity")]]);
+  renderStyleOptions();
+  toggleCustomBilingualLanguage(false);
+}
+
+function applyTheme(themeKey) {
+  currentTheme = themeKey;
+  const c = THEMES[themeKey].colors;
+  const root = document.documentElement.style;
+  root.setProperty('--navy', c.primary);
+  root.setProperty('--navy-dark', c.primaryDark);
+  root.setProperty('--navy-light', c.primaryLight);
+  root.setProperty('--orange', c.accent);
+  root.setProperty('--orange-light', c.accentLight);
+  const badge = document.querySelector('.badge');
+  if (badge) badge.textContent = `AI PPT Prompt Studio · ${t("themeGeneral")}`;
+}
+
+function applyStyleColors(styleKey) {
+  const preset = getAllStylePresets()[styleKey] || STYLE_PRESETS["report-flat"];
+  const c = preset.colors || STYLE_PRESETS["report-flat"].colors;
+  const root = document.documentElement.style;
+  root.setProperty('--navy', c.primary);
+  root.setProperty('--navy-dark', c.primaryDark);
+  root.setProperty('--navy-light', c.primaryLight);
+  root.setProperty('--orange', c.accent);
+  root.setProperty('--orange-light', c.accentLight);
+  const badge = document.querySelector('.badge');
+  const styleLabel = getStyleDisplayName(styleKey, preset);
+  if (badge) badge.textContent = `AI PPT Prompt Studio · ${styleLabel}`;
+}
+
+function applySelectedStyle() {
+  const styleKey = document.getElementById("artStyle").value;
+  applyStyleColors(styleKey);
+}
+
+const STYLE_LABEL_KEYS = {
+  "report-flat": "styleReportFlat",
+  "business-blue": "styleBusinessBlue",
+  "gray-minimal": "styleGrayMinimal",
+  "tech-wireframe": "styleTechWireframe",
+  "photo-scene": "stylePhotoScene",
+  "photo-overlay": "stylePhotoOverlay",
+};
+
+function getStyleDisplayName(key, preset) {
+  const labelKey = STYLE_LABEL_KEYS[key];
+  return labelKey ? t(labelKey) : preset.name;
+}
+
+function renderStyleOptions() {
+  const select = document.getElementById("artStyle");
+  if (!select) return;
+
+  const currentValue = select.value || "report-flat";
+  select.innerHTML = "";
+
+  Object.entries(STYLE_PRESETS).forEach(([key, preset]) => {
+    const option = document.createElement("option");
+    option.value = key;
+    const label = getStyleDisplayName(key, preset);
+    option.textContent = key === "report-flat" ? `${label} (${t("defaultSuffix")})` : label;
+    select.appendChild(option);
+  });
+
+  Object.entries(customStylePresets).forEach(([key, preset]) => {
+    const option = document.createElement("option");
+    option.value = key;
+    option.textContent = `${t("customPrefix")}: ${preset.name}`;
+    select.appendChild(option);
+  });
+
+  select.value = getAllStylePresets()[currentValue] ? currentValue : "report-flat";
+}
+
+function loadCustomStyles() {
+  try {
+    customStylePresets = JSON.parse(localStorage.getItem(CUSTOM_STYLES_STORAGE_KEY) || "{}") || {};
+  } catch (e) {
+    customStylePresets = {};
+  }
+  renderStyleOptions();
+}
+
+function saveCustomStyles() {
+  localStorage.setItem(CUSTOM_STYLES_STORAGE_KEY, JSON.stringify(customStylePresets));
+}
+
+function showCustomStyleMessage(text, color = "#2a9d5c") {
+  const msg = document.getElementById("customStyleMsg");
+  if (!msg) return;
+  msg.textContent = text;
+  msg.style.color = color;
+}
+
+function normalizeStyleColors(colors = {}) {
+  const fallback = STYLE_PRESETS["report-flat"].colors;
+  return {
+    primary: colors.primary || fallback.primary,
+    primaryDark: colors.primaryDark || colors.primary || fallback.primaryDark,
+    primaryLight: colors.primaryLight || fallback.primaryLight,
+    accent: colors.accent || fallback.accent,
+    accentLight: colors.accentLight || fallback.accentLight,
+  };
+}
+
+function sanitizeStyleKey(name) {
+  return `custom-${String(name || Date.now())
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 32) || Date.now()}`;
+}
+
+function importCustomStyle() {
+  const input = document.getElementById("customStyleJson");
+  const raw = input.value.trim();
+  if (!raw) {
+    showCustomStyleMessage(t("msgNeedJson"), "#d94f2b");
+    return;
+  }
+
+  try {
+    const data = JSON.parse(raw);
+    const name = String(data.name || "").trim();
+    const styleBase = String(data.styleBase || data.prompt || data.description || "").trim();
+    if (!name || !styleBase) {
+      showCustomStyleMessage(t("msgJsonNeedFields"), "#d94f2b");
+      return;
+    }
+
+    let key = data.key ? sanitizeStyleKey(data.key) : sanitizeStyleKey(name);
+    while (STYLE_PRESETS[key] || customStylePresets[key]) {
+      key = `${key}-${Date.now()}`;
+    }
+
+    customStylePresets[key] = {
+      name,
+      colors: normalizeStyleColors(data.colors),
+      styleBase,
+    };
+    saveCustomStyles();
+    renderStyleOptions();
+    document.getElementById("artStyle").value = key;
+    applySelectedStyle();
+    showCustomStyleMessage(`${t("msgStyleImported")} ${name}`);
+  } catch (e) {
+    showCustomStyleMessage(t("msgJsonInvalid"), "#d94f2b");
+  }
+}
+
+function clearCustomStyles() {
+  if (!Object.keys(customStylePresets).length) {
+    showCustomStyleMessage(t("msgNoCustomStyles"), "#d94f2b");
+    return;
+  }
+  if (!confirm(t("msgConfirmClearStyles"))) return;
+  customStylePresets = {};
+  saveCustomStyles();
+  renderStyleOptions();
+  applySelectedStyle();
+  showCustomStyleMessage(t("msgStylesCleared"));
+}
+
+function copyStyleAnalysisPrompt() {
+  const language = OUTPUT_LANGUAGES[getOutputLanguageKey()] || OUTPUT_LANGUAGES.en;
+  const prompt = `Analyze the style of my uploaded PPT template and output one importable JSON object for AI PPT Prompt Studio.
+
+Important requirements:
+1. Output only the JSON object. Do not use a Markdown code block and do not write \`\`\`json.
+2. Do not output an analysis report, explanation, introduction, or closing sentence.
+3. The JSON must be directly parseable by JSON.parse.
+4. Use only these top-level fields: name, colors, styleBase.
+5. colors must include primary, primaryDark, primaryLight, accent, and accentLight.
+6. styleBase must be a complete prompt paragraph that can be appended to a PPT visual prompt.
+7. Write name and styleBase in ${language.name}. If you are unsure, use English.
+
+Use exactly this structure:
+
+{
+  "name": "Short style name",
+  "colors": {
+    "primary": "#MAIN_HEX",
+    "primaryDark": "#DARK_MAIN_HEX",
+    "primaryLight": "#LIGHT_MAIN_HEX",
+    "accent": "#ACCENT_HEX",
+    "accentLight": "#LIGHT_ACCENT_HEX"
+  },
+  "styleBase": "Overall style: write a complete prompt paragraph based on the PPT template. Include use case and mood, main and secondary colors, background treatment, typography direction, graphic language, suitable visual elements, composition rules, and things to avoid. If the visual needs Chinese text, specify Microsoft YaHei."
+}
+
+styleBase writing requirements:
+1. Extract the PPT use case and tone, such as government report, business consulting, technology platform, city planning, cultural policy, corporate update, product proposal, education, healthcare, finance, or nonprofit.
+2. Extract main colors, secondary colors, accent colors, and background colors, preferably with HEX values.
+3. Extract typography and text mood, but do not ask the image model to generate large amounts of readable text.
+4. Extract layout and graphic language, such as dividers, small blocks, hexagons, rounded modules, arrows, data boxes, photos, maps, city silhouettes, interface panels, or icon systems.
+5. State which PPT visual elements are suitable for generation.
+6. Clearly state unsuitable styles, such as overly cartoonish, cyberpunk, neon, heavy 3D, complex lighting, too much text, cluttered decoration, or unrelated stock-photo scenes.
+7. The output must be ready to paste into AI PPT Prompt Studio's custom style import box.`;
+
+  navigator.clipboard.writeText(prompt).then(() => {
+    showCustomStyleMessage(t("msgStylePromptCopied"));
+  }).catch(() => {
+    showCustomStyleMessage(t("msgCopyFailed"), "#d94f2b");
+  });
+}
+
+const PLACEMENT = {
+  "right-half":  "Composition: near-square vertical layout, about 4:5 aspect ratio, designed to fill the right half of a slide.",
+  "left-half":   "Composition: near-square vertical layout, about 4:5 aspect ratio, designed to fill the left half of a slide.",
+  "right-third": "Composition: compact vertical layout, about 2:3 aspect ratio, designed for the right third of a slide.",
+  "bottom-half": "Composition: wide horizontal layout, about 16:7 aspect ratio, designed to fill the bottom half of a slide.",
+  "full":        "Composition: widescreen horizontal layout, strict 16:9 aspect ratio."
+};
+
+const COMPLEXITY = {
+  simple:  "Complexity: simple, only 2 to 3 visual elements, large clear icons, relaxed spacing.",
+  medium:  "Complexity: balanced, 4 to 6 visual elements, clear hierarchy, easy to understand at a glance.",
+  rich:    "Complexity: rich, 7 or more elements, grouped clearly, orderly overall structure."
+};
+
+const TEXT_LEVEL = {
+  minimal:  "Text inside visual: no text labels; communicate only through icons and shapes.",
+  some:     "Text inside visual: very few short keyword labels only at key nodes.",
+  moderate: "Text inside visual: a small number of concise labels for the main elements, with clean and legible typography."
+};
+
+const LANG = {
+  auto: "",
+  zh: "zh",
+  en: "en",
+  fr: "fr",
+  de: "de",
+  es: "es",
+  it: "it",
+  pt: "pt",
+  ja: "ja",
+  ko: "ko"
+};
+
+const STYLE_PRESETS = {
+  "report-flat": {
+    name: "Report flat diagram",
+    colors: {
+      primary: "#003087",
+      primaryDark: "#00256e",
+      primaryLight: "#e8eef7",
+      accent: "#d94f2b",
+      accentLight: "#fdf0ec",
+    },
+    styleBase: `Overall style: flat vector PPT diagram, deep navy blue (#003087) as the main color, white background, orange-red accent. Professional report aesthetic for business analysis, policy reports, product proposals, project updates, and training decks. Avoid photorealistic style, material textures, and heavy gradients. Fill the canvas without white borders. High-resolution output with crisp details. If Chinese text is required, use Microsoft YaHei.`,
+  },
+  "business-blue": {
+    name: "Business blue-white diagram",
+    colors: {
+      primary: "#0b3a75",
+      primaryDark: "#082c59",
+      primaryLight: "#e8f0fb",
+      accent: "#2f80ed",
+      accentLight: "#eaf3ff",
+    },
+    styleBase: `Overall style: restrained business blue-white diagram, using deep business blue, white, light blue, gray-blue, and small bright-blue accents. Clean, calm, structured, and suitable for government reports, consulting decks, and corporate presentations. Use clear icons, thin connectors, orderly modules, and enough whitespace. Avoid flashy decoration, strong gradients, and cartoon style. High-resolution output with crisp details.`,
+  },
+  "gray-minimal": {
+    name: "Gray-white minimal diagram",
+    colors: {
+      primary: "#3f4752",
+      primaryDark: "#2d333b",
+      primaryLight: "#eef0f2",
+      accent: "#8a99a8",
+      accentLight: "#f3f5f6",
+    },
+    styleBase: `Overall style: gray-white minimal diagram with low-saturation neutrals and subtle cool gray-blue accents. Spacious, restrained, thin-line, and clear. Suitable for serious content slides, policy explanations, and analysis pages. Avoid complex backgrounds, heavy decoration, glow effects, and excessive color. Keep the visual simple but not empty, with clear relationships and clean edges.`,
+  },
+  "tech-wireframe": {
+    name: "Tech wireframe diagram",
+    colors: {
+      primary: "#08345f",
+      primaryDark: "#062542",
+      primaryLight: "#e7f4fb",
+      accent: "#00a3c7",
+      accentLight: "#e5f9fd",
+    },
+    styleBase: `Overall style: tech wireframe diagram using deep blue, cyan-blue, and white. Use fine outlines, grids, nodes, data-flow lines, translucent modules, and subtle glowing edges. Suitable for platform architecture, system logic, data interfaces, algorithm flows, and digital operations. Keep it professional, clear, and modern. Avoid cyberpunk styling, excessive neon, and overly complex backgrounds.`,
+  },
+  "photo-scene": {
+    name: "Realistic scene photography",
+    colors: {
+      primary: "#243746",
+      primaryDark: "#172631",
+      primaryLight: "#eef3f5",
+      accent: "#cf6b38",
+      accentLight: "#fbefe8",
+    },
+    styleBase: `Overall style: realistic professional photography with natural lighting, calm colors, and clean composition. Suitable for office collaboration, product demos, service processes, operations management, and data analysis scenarios. Even with a photo-real look, the image must support the PPT message rather than become unrelated scenery or a portrait. Fill the canvas without white borders. High-resolution output for reports and screens.`,
+  },
+  "photo-overlay": {
+    name: "Realistic information overlay",
+    colors: {
+      primary: "#0b2d4d",
+      primaryDark: "#071f35",
+      primaryLight: "#e6f1f7",
+      accent: "#00a6d6",
+      accentLight: "#e6f8fc",
+    },
+    styleBase: `Overall style: realistic scene or photo-level rendering with concise graphic overlays, data callout boxes, translucent information layers, node links, and a few short keyword labels. The result should feel like “real scene + information design.” Suitable for key slides, section pages, and applied technology scenarios. Avoid excessive glow, too much small text, and overloaded dashboards.`,
+  },
+};
+
+const VERSION_PRESETS = {
+  standard: {
+    name: "Standard",
+    instruction: "",
+  },
+  structure: {
+    name: "Structure-focused",
+    instruction: "Version direction: structure-focused. Organize the content into a clear logical diagram, emphasizing process, hierarchy, relationships, matrices, comparison, or sequence. Make connections between elements explicit and keep the hierarchy easy to read. Do not turn the visual into pure decoration.",
+  },
+  visual: {
+    name: "Visual-enhanced",
+    instruction: "Version direction: visual-enhanced. Keep the content as the center, but strengthen scene-based expression, visual focus, and slide-level impact. Abstract content may be translated into business scenes, key objects, and a light information layer. Do not drift into unrelated atmosphere-only illustration.",
+  },
+};
+
+const OUTPUT_KEYS = ["standard", "structure", "visual"];
+const CUSTOM_STYLES_STORAGE_KEY = "pptPromptCustomStylesV2";
+const EXTENSION_ID_STORAGE_KEY = "aiPptPromptStudioExtensionId";
+const OUTPUT_LANGUAGE_STORAGE_KEY = "aiPptPromptStudioOutputLanguage";
+const DEFAULT_MODE = "illustration";
+let customStylePresets = {};
+let currentMode = DEFAULT_MODE;
+
+const OUTPUT_LANGUAGES = {
+  "zh-CN": { name: "简体中文", prompt: "提示词说明语言：本工具生成的提示词使用简体中文组织；图内可见标签语言必须以 Label language 设置为准，不要被界面语言覆盖。" },
+  en: { name: "English", prompt: "Prompt language: write the generated prompt in English. Visible labels inside the image must follow the Label language setting, not the app interface language." },
+  fr: { name: "Français", prompt: "Langue du prompt : rédigez le prompt généré en français. Les libellés visibles dans l’image doivent suivre le réglage Label language, pas la langue de l’interface." },
+  de: { name: "Deutsch", prompt: "Prompt language: write the generated prompt in German. Visible labels inside the image must follow the Label language setting, not the app interface language." },
+  es: { name: "Español", prompt: "Prompt language: write the generated prompt in Spanish. Visible labels inside the image must follow the Label language setting, not the app interface language." },
+  it: { name: "Italiano", prompt: "Prompt language: write the generated prompt in Italian. Visible labels inside the image must follow the Label language setting, not the app interface language." },
+  pt: { name: "Português", prompt: "Prompt language: write the generated prompt in Portuguese. Visible labels inside the image must follow the Label language setting, not the app interface language." },
+  ja: { name: "Japanese", prompt: "Prompt language: write the generated prompt in Japanese. Visible labels inside the image must follow the Label language setting, not the app interface language." },
+  ko: { name: "Korean", prompt: "Prompt language: write the generated prompt in Korean. Visible labels inside the image must follow the Label language setting, not the app interface language." },
+};
+
+const LABEL_LANGUAGE_NAMES = {
+  zh: { en: "Simplified Chinese", "zh-CN": "简体中文", fr: "chinois simplifié" },
+  en: { en: "English", "zh-CN": "英文", fr: "anglais" },
+  fr: { en: "French", "zh-CN": "法语", fr: "français" },
+  de: { en: "German", "zh-CN": "德语", fr: "allemand" },
+  es: { en: "Spanish", "zh-CN": "西班牙语", fr: "espagnol" },
+  it: { en: "Italian", "zh-CN": "意大利语", fr: "italien" },
+  pt: { en: "Portuguese", "zh-CN": "葡萄牙语", fr: "portugais" },
+  ja: { en: "Japanese", "zh-CN": "日语", fr: "japonais" },
+  ko: { en: "Korean", "zh-CN": "韩语", fr: "coréen" },
+};
+
+function getAllStylePresets() {
+  return { ...STYLE_PRESETS, ...customStylePresets };
+}
+
+function getOutputLanguageKey() {
+  const select = document.getElementById("outputLanguage");
+  const value = select ? select.value : "";
+  return OUTPUT_LANGUAGES[value] ? value : "en";
+}
+
+function getOutputLanguageInstruction() {
+  return OUTPUT_LANGUAGES[getOutputLanguageKey()].prompt;
+}
+
+function getLabelLanguageName(langKey) {
+  const names = LABEL_LANGUAGE_NAMES[langKey] || LABEL_LANGUAGE_NAMES.en;
+  return names[currentUiLanguage] || names.en;
+}
+
+function toggleCustomBilingualLanguage(shouldFocus = true) {
+  const select = document.getElementById("lang");
+  const input = document.getElementById("customBilingualLang");
+  if (!select || !input) return;
+  const enabled = select.value === "custom-bilingual";
+  input.hidden = !enabled;
+  if (enabled && shouldFocus) input.focus();
+}
+
+function getInImageLanguageInstruction(langKey) {
+  const uiLang = currentUiLanguage;
+  if (langKey === "auto") {
+    const lang = OUTPUT_LANGUAGES[getOutputLanguageKey()];
+    if (uiLang === "zh-CN") {
+      return `图内标签语言：跟随界面语言，使用${lang.name}；如果 Label language 选择了具体语言，必须以具体选择为准。`;
+    }
+    if (uiLang === "fr") {
+      return `Langue des libellés dans l’image : suivez la langue de l’interface et utilisez ${lang.name}. Si Label language indique une langue précise, cette sélection est prioritaire.`;
+    }
+    return `Visible label language: follow the app language and use ${lang.name}. If Label language is set to a specific language, that setting overrides the app language.`;
+  }
+  if (langKey === "custom-bilingual") {
+    const input = document.getElementById("customBilingualLang");
+    const customLanguage = input && input.value.trim() ? input.value.trim() : OUTPUT_LANGUAGES[getOutputLanguageKey()].name;
+    if (uiLang === "zh-CN") {
+      return `图内标签语言：使用双语标签：${customLanguage} + English。${customLanguage}在上，English 在下且字号略小；所有标签必须简短、清晰、可读。`;
+    }
+    if (uiLang === "fr") {
+      return `Langue des libellés dans l’image : utilisez des libellés bilingues ${customLanguage} + English. Placez ${customLanguage} au-dessus et English en dessous avec une taille légèrement plus petite. Gardez les libellés courts et lisibles.`;
+    }
+    return `Visible label language: use bilingual ${customLanguage} + English labels. Put ${customLanguage} above and English below in a slightly smaller size. Keep all labels short and readable.`;
+  }
+  if (LANG[langKey]) {
+    const labelLanguage = getLabelLanguageName(langKey);
+    if (uiLang === "zh-CN") {
+      const fontRule = langKey === "zh" ? "中文字体使用 Microsoft YaHei。" : "不要使用中文标签，除非原始内容明确要求。";
+      return `图内标签语言：必须使用${labelLanguage}；如需图中文字，请把短标签翻译成${labelLanguage}，保持简短清晰。${fontRule}`;
+    }
+    if (uiLang === "fr") {
+      const fontRule = langKey === "zh" ? "Utilisez Microsoft YaHei pour le texte chinois." : "N’utilisez pas de libellés chinois, sauf si le contenu source l’exige explicitement.";
+      return `Langue des libellés dans l’image : utilisez obligatoirement ${labelLanguage}. Si du texte apparaît dans l’image, traduisez les libellés courts en ${labelLanguage}, avec une typographie lisible. ${fontRule}`;
+    }
+    const fontRule = langKey === "zh" ? "Use Microsoft YaHei for Chinese text." : "Do not use Chinese labels unless the source content explicitly requires them.";
+    return `Visible label language: use ${labelLanguage}. If any text appears inside the image, translate short labels into ${labelLanguage} and keep them concise and readable. ${fontRule}`;
+  }
+  return LANG.auto;
+}
+
+function saveOutputLanguage() {
+  const languageKey = getOutputLanguageKey();
+  localStorage.setItem(OUTPUT_LANGUAGE_STORAGE_KEY, languageKey);
+  applyUiLanguage(languageKey);
+  applySelectedStyle();
+}
+
+function loadOutputLanguage() {
+  const saved = localStorage.getItem(OUTPUT_LANGUAGE_STORAGE_KEY);
+  applyUiLanguage(isSupportedUiLanguage(saved) ? saved : "en");
+  const modal = document.getElementById("languageModal");
+  if (modal && !isSupportedUiLanguage(saved)) modal.hidden = false;
+}
+
+function confirmWelcomeLanguage() {
+  const select = document.getElementById("welcomeLanguage");
+  const languageKey = select && isSupportedUiLanguage(select.value) ? select.value : "en";
+  if (document.getElementById("rememberLanguage").checked) {
+    localStorage.setItem(OUTPUT_LANGUAGE_STORAGE_KEY, languageKey);
+  } else {
+    localStorage.removeItem(OUTPUT_LANGUAGE_STORAGE_KEY);
+  }
+  applyUiLanguage(languageKey);
+  applySelectedStyle();
+  document.getElementById("languageModal").hidden = true;
+}
+
+function setMode(mode) {
+  currentMode = mode === "pptx" ? "pptx" : "illustration";
+  const isPptxMode = currentMode === "pptx";
+
+  document.querySelectorAll("[data-mode-tab]").forEach((tab) => {
+    const active = tab.dataset.modeTab === currentMode;
+    tab.classList.toggle("is-active", active);
+    tab.setAttribute("aria-pressed", active ? "true" : "false");
+  });
+
+  document.getElementById("illustrationContentCard").hidden = isPptxMode;
+  document.getElementById("illustrationSettingsCard").hidden = isPptxMode;
+  document.getElementById("pptxSettingsCard").hidden = !isPptxMode;
+  document.querySelectorAll("[data-version-card]").forEach((card) => {
+    card.hidden = isPptxMode;
+  });
+  document.getElementById("pptxOutputCard").hidden = !isPptxMode;
+
+  const providerMsg = document.getElementById("providerMsg");
+  if (providerMsg) providerMsg.hidden = isPptxMode;
+
+  if (isPptxMode) {
+    const badge = document.querySelector(".badge");
+    if (badge) badge.textContent = t("msgPptxBadge");
+  } else {
+    applySelectedStyle();
+  }
+}
+
+function generate() {
+  if (currentMode === "pptx") {
+    generatePptxPrompt();
+    return;
+  }
+
+  const content = document.getElementById("content").value.trim();
+  const note = document.getElementById("note").value.trim();
+  const chartType = document.getElementById("chartType").value;
+  const placement = document.getElementById("placement").value;
+  const complexity = document.getElementById("complexity").value;
+  const textLevel = document.getElementById("textLevel").value;
+  const lang = document.getElementById("lang").value;
+  const artStyle = document.getElementById("artStyle").value;
+
+  if (!content && !note) {
+    renderOutputPlaceholders(t("msgNeedContent"));
+    return;
+  }
+
+  const theme = THEMES[currentTheme];
+  const typePart = theme.typePrompts[chartType](content, note);
+  const stylePreset = getAllStylePresets()[artStyle] || STYLE_PRESETS["report-flat"];
+
+  OUTPUT_KEYS.forEach((versionKey) => {
+    const version = VERSION_PRESETS[versionKey];
+    const promptParts = [
+      typePart,
+      version.instruction,
+      COMPLEXITY[complexity],
+      TEXT_LEVEL[textLevel],
+      getInImageLanguageInstruction(lang),
+      PLACEMENT[placement],
+      stylePreset.styleBase,
+      getOutputLanguageInstruction()
+    ].filter(Boolean);
+    setOutputText(versionKey, promptParts.join("\n"));
+  });
+}
+
+const PPTX_REGION_PROMPTS = {
+  full: "",
+  "right-half": "This image is not a full-slide screenshot. It is the right half of the original 16:9 PPT slide. Output a full 16:9 PPTX, rebuild this image content into the right half only, keep the left half as a blank placeholder, do not invent missing content, and do not stretch the right-half content to fill the whole slide.",
+  "left-half": "This image is not a full-slide screenshot. It is the left half of the original 16:9 PPT slide. Output a full 16:9 PPTX, rebuild this image content into the left half only, keep the right half as a blank placeholder, do not invent missing content, and do not stretch the left-half content to fill the whole slide.",
+  "top-half": "This image is not a full-slide screenshot. It is the top half of the original 16:9 PPT slide. Output a full 16:9 PPTX, rebuild this image content into the top half only, keep the bottom half as a blank placeholder, do not invent missing content, and do not stretch the top-half content to fill the whole slide.",
+  "bottom-half": "This image is not a full-slide screenshot. It is the bottom half of the original 16:9 PPT slide. Output a full 16:9 PPTX, rebuild this image content into the bottom half only, keep the top half as a blank placeholder, do not invent missing content, and do not stretch the bottom-half content to fill the whole slide.",
+  "center-block": "This image is not a full-slide screenshot. It is a partial region from the original 16:9 PPT slide. Output a full 16:9 PPTX, rebuild this image content into the center region only, keep all missing areas as blank placeholders, do not invent missing content, and do not stretch the partial content to fill the whole slide.",
+};
+
+function buildPptxPrompt(ratio, region, extra) {
+  const basePrompt = `Rebuild this image as a ${ratio} PPTX using fidelity-first layered reconstruction. Do not paste the entire image as one large picture, and do not simplify the original design into low-level rectangles, circles, and lines. Convert text into real editable text boxes whenever possible. Rebuild simple cards, buttons, color blocks, dividers, labels, and arrows as editable PowerPoint shapes. Preserve complex icons, illustrations, product images, people, textures, gradients, lighting, and decorative elements as separate embedded image objects that can be selected, moved, resized, and cropped individually. Never stretch, squash, or distort any image; always preserve the original aspect ratio. Priority order: visual fidelity and original design feel first, editable main content second, and a valid openable .pptx file third.`;
+  const regionPrompt = PPTX_REGION_PROMPTS[region] || "";
+  const parts = [
+    regionPrompt,
+    basePrompt,
+    `${getOutputLanguageInstruction()} Preserve readable text from the uploaded image by default. Do not translate existing text unless the user explicitly requests translation in the extra requirements.`
+  ].filter(Boolean);
+
+  if (extra) {
+    parts.push(`Extra requirements: ${extra}`);
+  }
+
+  return parts.join("\n");
+}
+
+function generatePptxPrompt() {
+  const ratio = document.getElementById("pptxRatio").value || "16:9";
+  const region = document.getElementById("pptxRegion").value || "full";
+  const extra = document.getElementById("pptxExtra").value.trim();
+  setOutputText("pptx", buildPptxPrompt(ratio, region, extra));
+}
+
+function setOutputText(versionKey, text) {
+  const el = document.querySelector(`[data-output="${versionKey}"]`);
+  if (!el) return;
+  el.textContent = text;
+}
+
+function renderOutputPlaceholders(text) {
+  OUTPUT_KEYS.forEach((versionKey) => {
+    const el = document.querySelector(`[data-output="${versionKey}"]`);
+    if (el) el.innerHTML = `<span class="output-placeholder">${text}</span>`;
+  });
+}
+
+function getPromptByVersion(versionKey) {
+  const el = document.querySelector(`[data-output="${versionKey}"]`);
+  if (!el) return "";
+  if (el.querySelector(".output-placeholder")) return "";
+  const text = el.textContent.trim();
+  if (!text) return "";
+  return text;
+}
+
+function copyPrompt(versionKey) {
+  const text = getPromptByVersion(versionKey);
+  if (!text) return;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const msg = document.getElementById("copyMsg");
+    msg.style.opacity = 1;
+    setTimeout(() => msg.style.opacity = 0, 2500);
+  });
+}
+
+function showExtensionMessage(text, color = "#2a9d5c") {
+  const msg = document.getElementById("extensionMsg");
+  if (!msg) return;
+  msg.textContent = text;
+  msg.style.color = color;
+}
+
+function loadExtensionId() {
+  const input = document.getElementById("extensionIdInput");
+  if (!input) return;
+  input.value = localStorage.getItem(EXTENSION_ID_STORAGE_KEY) || "";
+}
+
+function getExtensionId() {
+  const input = document.getElementById("extensionIdInput");
+  const value = input ? input.value.trim() : "";
+  return value || localStorage.getItem(EXTENSION_ID_STORAGE_KEY) || "";
+}
+
+function saveExtensionId() {
+  const id = getExtensionId();
+  if (!/^[a-z]{32}$/.test(id)) {
+    showExtensionMessage(t("msgInvalidExtensionId"), "#d94f2b");
+    return;
+  }
+  localStorage.setItem(EXTENSION_ID_STORAGE_KEY, id);
+  showExtensionMessage(t("msgExtensionSaved"));
+}
+
+function clearExtensionId() {
+  localStorage.removeItem(EXTENSION_ID_STORAGE_KEY);
+  const input = document.getElementById("extensionIdInput");
+  if (input) input.value = "";
+  showExtensionMessage(t("msgExtensionCleared"));
+}
+
+const PROVIDERS = {
+  gemini: {
+    action: "sendToGemini",
+    buttonSelector: ".gemini-btn",
+    idleTextKey: "sendGemini",
+    successTextKey: "msgGeminiSent",
+  },
+  chatgpt: {
+    action: "sendToChatGPT",
+    buttonSelector: ".chatgpt-btn",
+    idleTextKey: "sendChatGPT",
+    successTextKey: "msgChatGptSent",
+  },
+};
+
+function getCurrentPrompt() {
+  return getPromptByVersion("standard");
+}
+
+function showProviderMessage(text, color, duration) {
+  const msg = document.getElementById("providerMsg");
+  msg.textContent = text;
+  msg.style.color = color;
+  msg.style.opacity = 1;
+  setTimeout(() => (msg.style.opacity = 0), duration);
+}
+
+function sendToProvider(providerKey, versionKey = "standard", btn = null) {
+  const provider = PROVIDERS[providerKey];
+  if (!provider) return;
+
+  const text = getPromptByVersion(versionKey);
+  if (!text) return;
+
+  const msg = document.getElementById("providerMsg");
+  const originalText = btn ? btn.textContent : t(provider.idleTextKey);
+
+  // Copy first as a fallback in case the extension cannot send.
+  navigator.clipboard.writeText(text).catch(() => {});
+
+  const extensionId = getExtensionId();
+  if (!extensionId) {
+    showProviderMessage(t("msgNeedExtensionId"), "#d94f2b", 6000);
+    return;
+  }
+
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = t("msgSending");
+  }
+  msg.style.opacity = 0;
+
+  try {
+    chrome.runtime.sendMessage(
+      extensionId,
+      { action: provider.action, prompt: text },
+      (response) => {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+
+        if (chrome.runtime.lastError) {
+          showProviderMessage(t("msgSendFailedInstall"), "#d94f2b", 5000);
+          return;
+        }
+
+        if (response && response.success) {
+          showProviderMessage(t(provider.successTextKey), "#2a9d5c", 3000);
+        } else {
+          showProviderMessage(t("msgSendFailedRefresh"), "#d94f2b", 5000);
+        }
+      }
+    );
+  } catch (e) {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+    showProviderMessage(t("msgSendFailedInstall"), "#d94f2b", 5000);
+  }
+}
+
+loadCustomStyles();
+loadExtensionId();
+loadOutputLanguage();
+applyTheme(DEFAULT_THEME);
+applySelectedStyle();
+setMode(DEFAULT_MODE);
+</script>
+</body>
+</html>
