@@ -1,4 +1,21 @@
-# AI PPT Prompt Studio
+<div align="center">
+  <h1>AI PPT Prompt Studio</h1>
+  <p><strong>本地 PPT AI 提示词工作台：生成配图提示词、图片转 PPTX 提示词，并可一键发送到 ChatGPT / Gemini。</strong></p>
+  <p>
+    <a href="https://xixite.github.io/ai-ppt-prompt-studio/"><img alt="在线体验" src="https://img.shields.io/badge/在线体验-GitHub%20Pages-2ea44f"></a>
+    <a href="docs/extension-setup.md"><img alt="浏览器扩展" src="https://img.shields.io/badge/浏览器扩展-一键发送-0969da"></a>
+    <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-blue"></a>
+    <img alt="无需 API Key" src="https://img.shields.io/badge/API%20Key-无需-6f42c1">
+  </p>
+  <p>
+    <a href="README.md">English</a> | 中文 |
+    <a href="https://xixite.github.io/ai-ppt-prompt-studio/">在线体验</a> |
+    <a href="https://github.com/XIXITE/ai-ppt-prompt-studio/archive/refs/heads/main.zip">下载 ZIP</a> |
+    <a href="docs/extension-setup.md">扩展安装</a>
+  </p>
+</div>
+
+---
 
 AI PPT Prompt Studio 是一个本地运行的 PPT 提示词工具。它把幻灯片内容、截图重建需求、PPT 模板风格，整理成更稳定的提示词，方便你复制到 ChatGPT、Gemini 或其他 AI 工具中使用。
 

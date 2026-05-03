@@ -1,22 +1,20 @@
-# AI PPT Prompt Studio
-
-## 中文用户快速入口
-
-这是一个给 PPT 用户用的本地 AI 提示词工具。输入幻灯片内容后，它可以生成 3 个版本的 PPT 配图提示词，并可通过浏览器扩展一键发送到 ChatGPT / Gemini。
-
-- 在线体验：[https://xixite.github.io/ai-ppt-prompt-studio/](https://xixite.github.io/ai-ppt-prompt-studio/)
-- 下载 ZIP：[main.zip](https://github.com/XIXITE/ai-ppt-prompt-studio/archive/refs/heads/main.zip)
-- 中文完整说明：[README.zh-CN.md](README.zh-CN.md)
-- 浏览器扩展安装：[docs/extension-setup.md](docs/extension-setup.md)
-
-快速使用：
-
-1. 打开在线体验链接，或下载 ZIP 后双击 `index.html`。
-2. 第一次打开时选择 `中文`。
-3. 粘贴 PPT 页面内容，点击 `生成提示词`。
-4. 复制提示词，或安装扩展后一键发送到 ChatGPT / Gemini。
-
-注意：本工具不需要 API Key，没有后端，也不会自动上传你的文件。图片转 PPTX 模式只生成提示词，不直接生成 PPTX 文件。
+<div align="center">
+  <h1>AI PPT Prompt Studio</h1>
+  <p><strong>A local prompt studio for AI visuals and editable PPTX reconstruction.</strong></p>
+  <p>
+    <a href="https://xixite.github.io/ai-ppt-prompt-studio/"><img alt="Live Demo" src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-2ea44f"></a>
+    <a href="docs/extension-setup.md"><img alt="Browser Extension" src="https://img.shields.io/badge/Browser%20Extension-One--Click%20Send-0969da"></a>
+    <a href="LICENSE"><img alt="License MIT" src="https://img.shields.io/badge/License-MIT-blue"></a>
+    <img alt="API Key Not Required" src="https://img.shields.io/badge/API%20Key-Not%20Required-6f42c1">
+  </p>
+  <p>
+    English | <a href="README.zh-CN.md">中文</a> |
+    <a href="https://xixite.github.io/ai-ppt-prompt-studio/">Live Demo</a> |
+    <a href="https://github.com/XIXITE/ai-ppt-prompt-studio/archive/refs/heads/main.zip">Download ZIP</a> |
+    <a href="docs/extension-setup.md">Extension Setup</a>
+  </p>
+  <p><strong>中文用户：</strong>点击上方 <a href="README.zh-CN.md">中文</a> 查看完整中文说明；打开在线版后第一次选择“中文”即可使用中文界面。</p>
+</div>
 
 ---
 
