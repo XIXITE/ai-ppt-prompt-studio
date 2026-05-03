@@ -6,6 +6,13 @@ AI PPT Prompt Studio 是一个本地运行的 PPT 提示词工具。它把幻灯
 
 重点功能：配套浏览器扩展后，可以一键把生成好的提示词发送到 ChatGPT 或 Gemini。扩展会自动打开目标页面、填入提示词并点击发送。
 
+## 立即使用
+
+- 在线体验：[https://xixite.github.io/ai-ppt-prompt-studio/](https://xixite.github.io/ai-ppt-prompt-studio/)
+- 下载 ZIP：[main.zip](https://github.com/XIXITE/ai-ppt-prompt-studio/archive/refs/heads/main.zip)
+- 扩展安装：[docs/extension-setup.md](docs/extension-setup.md)
+- 英文说明：[README.md](README.md)
+
 ## 核心功能
 
 - 配套浏览器扩展，一键发送提示词到 ChatGPT 或 Gemini。

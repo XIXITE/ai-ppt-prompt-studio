@@ -6,7 +6,12 @@ It does not call any AI API, does not require an API key, and does not upload yo
 
 Key feature: with the included browser extension, you can send a generated prompt to ChatGPT or Gemini in one click. The extension opens the target page, fills the prompt, and submits it automatically.
 
-[中文说明](README.zh-CN.md)
+## Try It
+
+- Live demo: [https://xixite.github.io/ai-ppt-prompt-studio/](https://xixite.github.io/ai-ppt-prompt-studio/)
+- Download ZIP: [main.zip](https://github.com/XIXITE/ai-ppt-prompt-studio/archive/refs/heads/main.zip)
+- Extension setup: [docs/extension-setup.md](docs/extension-setup.md)
+- Chinese README: [README.zh-CN.md](README.zh-CN.md)
 
 ## What It Can Do
 
