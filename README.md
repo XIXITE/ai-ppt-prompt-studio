@@ -1,5 +1,25 @@
 # AI PPT Prompt Studio
 
+## 中文用户快速入口
+
+这是一个给 PPT 用户用的本地 AI 提示词工具。输入幻灯片内容后，它可以生成 3 个版本的 PPT 配图提示词，并可通过浏览器扩展一键发送到 ChatGPT / Gemini。
+
+- 在线体验：[https://xixite.github.io/ai-ppt-prompt-studio/](https://xixite.github.io/ai-ppt-prompt-studio/)
+- 下载 ZIP：[main.zip](https://github.com/XIXITE/ai-ppt-prompt-studio/archive/refs/heads/main.zip)
+- 中文完整说明：[README.zh-CN.md](README.zh-CN.md)
+- 浏览器扩展安装：[docs/extension-setup.md](docs/extension-setup.md)
+
+快速使用：
+
+1. 打开在线体验链接，或下载 ZIP 后双击 `index.html`。
+2. 第一次打开时选择 `中文`。
+3. 粘贴 PPT 页面内容，点击 `生成提示词`。
+4. 复制提示词，或安装扩展后一键发送到 ChatGPT / Gemini。
+
+注意：本工具不需要 API Key，没有后端，也不会自动上传你的文件。图片转 PPTX 模式只生成提示词，不直接生成 PPTX 文件。
+
+---
+
 AI PPT Prompt Studio is a local, single-file prompt tool for PowerPoint workflows. It helps you turn slide notes into clear prompts for ChatGPT, Gemini, or other AI tools.
 
 It does not call any AI API, does not require an API key, and does not upload your files by itself.
